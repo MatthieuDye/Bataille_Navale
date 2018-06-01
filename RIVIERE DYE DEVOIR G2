@@ -1,0 +1,41 @@
+# Matthieu DYE - Tristan RIVIERE IG3
+.data
+msg:.asciiz "Entrer une chaine de caractères\n"
+saisie:.space 50
+
+.text
+main:	li $v0, 4
+	la $a0, msg	
+	syscall
+	li $v0, 8
+	la $a0,saisie
+	li $a1, 50
+	syscall
+	move $t0, $a0
+	li $t2,0
+boucle:	lb $t1, ($t0)
+	beq $t1,10,suite
+	addi $t2,$t2,1
+	addi $t0,$t0,1
+	j boucle
+suite:	li $v0,1
+	move $a0, $t2
+	syscall
+	li $t3, 0
+	li $t4, 1
+	addi $t2, $t2,-1
+	move $t1,$t0
+	#addi $t1,$t1,$t2
+while1: lb $t5, ($t0) 
+	lb $t6, ($t1)	
+	ble $t2,$t3, endb
+	beq $t4,0, endb
+	addi $t3,$t3,1
+	addi $t2,$t2,-1
+	addi $t0,$t0,1
+	addi $t1,$t1,-1
+	beq $t5,$t6, suite2
+	li $t4, 0 
+suite2:  j while1	
+endb:  
+# pas fini : il manque l'affichage du résultat ( $t4 = 0, si pas palindrome , 1 sinon)
